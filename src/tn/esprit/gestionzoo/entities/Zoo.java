@@ -13,7 +13,7 @@ public class Zoo {
     private static final int MAX_AQUATIC = 10;
 
     /** Number of cages: a constant, it can never change once the zoo is built. */
-    private final int nbrCages = 25;
+    private final int nbrCages = 3;
 
     private Animal[] animals;
     private int animalCount;
@@ -88,12 +88,22 @@ public class Zoo {
      *
      * @return true if added, false if null, duplicate or zoo full
      */
-    public boolean addAnimal(Animal animal) {
-        if (animal == null || isZooFull() || searchAnimal(animal) != -1) {
-            return false;
+    public void addAnimal(Animal animal)
+            throws ZooFullException, InvalidAgeException {
+
+        if (animal.getAge() < 0) {
+            throw new InvalidAgeException();
         }
+
+        if (isZooFull()) {
+            throw new ZooFullException();
+        }
+
+        if (animal == null || searchAnimal(animal) != -1) {
+            return;
+        }
+
         animals[animalCount++] = animal;
-        return true;
     }
 
     /**
